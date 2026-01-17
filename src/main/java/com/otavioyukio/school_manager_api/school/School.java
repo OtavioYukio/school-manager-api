@@ -19,7 +19,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-class School {
+public class School {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,7 +30,7 @@ class School {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    School(String name) {
+    public School(String name) {
         this.name = name;
     }
 }

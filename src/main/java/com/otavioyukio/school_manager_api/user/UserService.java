@@ -1,5 +1,6 @@
 package com.otavioyukio.school_manager_api.user;
 
+import com.otavioyukio.school_manager_api.commons.exception.EmailAlreadyExistsException;
 import com.otavioyukio.school_manager_api.commons.exception.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class UserService {
 
     public UserResponseDTO createUser(User newUser) {
         if (repository.existsByEmail(newUser.getEmail())) {
-            throw new ObjectNotFoundException("User");
+            throw new EmailAlreadyExistsException();
         }
         repository.save(newUser);
         return UserMapper.toResponse(newUser);

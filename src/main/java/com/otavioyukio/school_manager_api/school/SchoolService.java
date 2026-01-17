@@ -1,5 +1,7 @@
 package com.otavioyukio.school_manager_api.school;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,14 @@ public class SchoolService {
         school.setName(schoolRequestDTO.name());
         repository.save(school);
         return SchoolMapper.toResponse(school);
+    }
+
+    public void deleteSchoolById(Long id) {
+        Optional<School> school = repository.findById(id);
+        if (school == null) {
+            throw new RuntimeException("School with id " + id + " not found.");
+        }
+        repository.deleteById(id);
     }
     
 }   

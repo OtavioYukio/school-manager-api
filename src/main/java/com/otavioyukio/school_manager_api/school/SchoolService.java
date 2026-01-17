@@ -16,4 +16,14 @@ public class SchoolService {
         return SchoolMapper.toResponse(newSchool);
     }
 
+    public SchoolResponseDTO updateSchoolById(Long id, SchoolRequestDTO schoolRequestDTO) {
+        School school = repository.findById(id)
+                        .orElseThrow(() -> new RuntimeException(
+                            "School with id " + id + " not found.")
+                        );
+        school.setName(schoolRequestDTO.name());
+        repository.save(school);
+        return SchoolMapper.toResponse(school);
+    }
+    
 }   

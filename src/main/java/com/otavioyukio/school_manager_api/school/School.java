@@ -30,8 +30,7 @@ class School {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    public School(String name, LocalDateTime createdAt) {
+    public School(String name) {
         this.name = name;
-        this.createdAt = createdAt;
     }
 }

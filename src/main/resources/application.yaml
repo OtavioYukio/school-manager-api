@@ -1,3 +1,9 @@
 spring:
   application:
     name: school-manager-api
+  datasource:
+    url: jdbc://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jwt:
+    secret: ${JWT_SECRET:default_secret_dev}

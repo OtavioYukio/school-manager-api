@@ -22,7 +22,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(InconsistentDataException.class)
     public final ResponseEntity<Object>
-    handleInconsistentDataException(ObjectNotFoundException ex) {
+    handleInconsistentDataException(InconsistentDataException ex) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("error", ex.getMessage());
+        return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public final ResponseEntity<Object>
+    handleEmailAlreadyExistsException(EmailAlreadyExistsException ex) {
         Map<String, Object> map = new HashMap<>();
         map.put("error", ex.getMessage());
         return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);

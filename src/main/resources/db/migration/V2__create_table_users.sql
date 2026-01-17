@@ -1,0 +1,18 @@
+CREATE TABLE users (
+    id BIGSERIAL PRIMARY KEY,
+
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+
+    school_id BIGINT NOT NULL,
+
+    role VARCHAR(20) NOT NULL,
+
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW(),
+
+    CONSTRAINT fk_users_school
+        FOREIGN KEY (school_id)
+        REFERENCES schools (id)
+        ON DELETE RESTRICT
+);

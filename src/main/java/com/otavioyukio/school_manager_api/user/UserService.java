@@ -3,8 +3,6 @@ package com.otavioyukio.school_manager_api.user;
 import com.otavioyukio.school_manager_api.commons.exception.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class UserService {
     private final UserRepository repository;

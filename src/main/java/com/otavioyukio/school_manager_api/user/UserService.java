@@ -1,7 +1,9 @@
 package com.otavioyukio.school_manager_api.user;
 
-import lombok.RequiredArgsConstructor;
+import com.otavioyukio.school_manager_api.commons.exception.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -12,8 +14,12 @@ public class UserService {
     }
 
     public UserResponseDTO createUser(UserRequestDTO userRequestDTO, Role role) {
+        if (repository.existsByEmail(userRequestDTO.email())) {
+            throw new ObjectNotFoundException("User");
+        }
         User newUser = UserMapper.toEntity(userRequestDTO, role);
         repository.save(newUser);
         return UserMapper.toResponse(newUser);
     }
+
 }

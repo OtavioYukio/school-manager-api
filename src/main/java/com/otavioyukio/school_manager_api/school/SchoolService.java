@@ -12,8 +12,7 @@ public class SchoolService {
     
     private final SchoolRepository repository;
 
-    public SchoolResponseDTO createSchool(SchoolRequestDTO dto) {
-        School newSchool = SchoolMapper.toEntity(dto);
+    public SchoolResponseDTO createSchool(School newSchool) {
         repository.save(newSchool);
         return SchoolMapper.toResponse(newSchool);
     }

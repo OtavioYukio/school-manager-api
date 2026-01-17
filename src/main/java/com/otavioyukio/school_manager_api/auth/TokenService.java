@@ -13,11 +13,11 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 @Service
-class TokenService {
+public class TokenService {
     @Value("${spring.jwt.secret}")
     private String secret;
 
-    String generateToken(User user) {
+    public String generateToken(User user) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
 
@@ -33,7 +33,7 @@ class TokenService {
         }
     }
 
-    String validateToken(String token) {
+    public String validateToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
 

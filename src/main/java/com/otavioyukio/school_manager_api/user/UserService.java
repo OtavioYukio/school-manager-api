@@ -35,4 +35,11 @@ public class UserService {
         return UserMapper.toResponse(updatedUser);
     }
 
+    public void deleteUserById(Long id) {
+        User user = repository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("User"));
+
+        repository.delete(user);
+    }
+
 }

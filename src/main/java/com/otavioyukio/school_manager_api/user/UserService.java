@@ -22,4 +22,17 @@ public class UserService {
         return UserMapper.toResponse(newUser);
     }
 
+    public UserResponseDTO updateUser(Long id, UserRequestDTO userRequestDTO) {
+        User user = repository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("User"));
+
+        user.setEmail(userRequestDTO.email());
+        user.setPassword(userRequestDTO.password());
+        user.setSchool(userRequestDTO.school());
+
+        User updatedUser = repository.save(user);
+
+        return UserMapper.toResponse(updatedUser);
+    }
+
 }

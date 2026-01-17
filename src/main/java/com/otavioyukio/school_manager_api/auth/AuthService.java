@@ -7,6 +7,7 @@ import com.otavioyukio.school_manager_api.school.SchoolService;
 import com.otavioyukio.school_manager_api.user.Role;
 import com.otavioyukio.school_manager_api.user.User;
 import com.otavioyukio.school_manager_api.user.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class AuthService {
         this.schoolService = schoolService;
     }
 
+    @Transactional
     RegisterResponseDTO register(RegisterRequestDTO registerRequestDTO) {
         School newSchool = new School(registerRequestDTO.name());
         schoolService.createSchool(newSchool);

@@ -1,5 +1,8 @@
 package com.otavioyukio.school_manager_api.school;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class SchoolMapper {
     public static School toEntity(SchoolRequestDTO schoolRequestDTO) {
         return new School(schoolRequestDTO.name());

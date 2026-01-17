@@ -16,11 +16,10 @@ public class UserService {
                 .orElseThrow(() -> new ObjectNotFoundException("User"));
     }
 
-    public UserResponseDTO createUser(UserRequestDTO userRequestDTO, Role role) {
-        if (repository.existsByEmail(userRequestDTO.email())) {
+    public UserResponseDTO createUser(User newUser) {
+        if (repository.existsByEmail(newUser.getEmail())) {
             throw new ObjectNotFoundException("User");
         }
-        User newUser = UserMapper.toEntity(userRequestDTO, role);
         repository.save(newUser);
         return UserMapper.toResponse(newUser);
     }

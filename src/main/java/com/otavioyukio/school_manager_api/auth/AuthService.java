@@ -1,5 +1,6 @@
 package com.otavioyukio.school_manager_api.auth;
 
+import com.otavioyukio.school_manager_api.commons.exception.InconsistentDataException;
 import com.otavioyukio.school_manager_api.school.School;
 import com.otavioyukio.school_manager_api.school.SchoolService;
 import com.otavioyukio.school_manager_api.user.Role;
@@ -39,5 +40,22 @@ class AuthService {
                 newUser.getSchool().getName(),
                 newUser.getCreatedAt()
         );
+    }
+
+    LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
+        User user = userService.findUserByEmail(loginRequestDTO.email());
+        if (!passwordEncoder.matches(loginRequestDTO.password(), user.getPassword())) {
+            throw new InconsistentDataException("Inconsistent data.");
+        }
+
+        String token = tokenService.generateToken(user);
+
+        return new LoginResponseDTO(
+                token,
+                user.getSchool().getName(),
+                user.getCreatedAt(),
+                user.getUpdatedAt()
+        );
+
     }
 }

@@ -11,6 +11,11 @@ public class UserService {
         this.repository = repository;
     }
 
+    public User findUserByEmail(String email) {
+        return repository.findByEmail(email)
+                .orElseThrow(() -> new ObjectNotFoundException("User"));
+    }
+
     public UserResponseDTO createUser(UserRequestDTO userRequestDTO, Role role) {
         if (repository.existsByEmail(userRequestDTO.email())) {
             throw new ObjectNotFoundException("User");

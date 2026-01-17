@@ -19,4 +19,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         map.put("error", ex.getMessage());
         return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(InconsistentDataException.class)
+    public final ResponseEntity<Object>
+    handleInconsistentDataException(ObjectNotFoundException ex) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("error", ex.getMessage());
+        return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+    }
 }

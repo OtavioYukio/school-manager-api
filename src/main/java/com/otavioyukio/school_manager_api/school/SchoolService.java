@@ -2,6 +2,7 @@ package com.otavioyukio.school_manager_api.school;
 
 import java.util.Optional;
 
+import com.otavioyukio.school_manager_api.commons.exception.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,11 @@ import lombok.RequiredArgsConstructor;
 public class SchoolService {
     
     private final SchoolRepository repository;
+
+    public School getSchoolById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("School"));
+    }
 
     public SchoolResponseDTO createSchool(School newSchool) {
         repository.save(newSchool);

@@ -28,6 +28,28 @@ public class AuthService {
     }
 
     @Transactional
+    RegisterResponseDTO registerTeacher(RegisterTeacherRequestDTO registerTeacherRequestDTO) {
+        School school = schoolService.getSchoolById(registerTeacherRequestDTO.schoolId());
+        User newUser = new User(
+                registerTeacherRequestDTO.email(),
+                passwordEncoder.encode(registerTeacherRequestDTO.password()),
+                school,
+                Role.TEACHER
+        );
+        userService.createUser(newUser);
+
+        String token = tokenService.generateToken(newUser);
+
+        return new RegisterResponseDTO(
+                token,
+                newUser.getEmail(),
+                newUser.getSchool().getName(),
+                newUser.getRole(),
+                newUser.getCreatedAt()
+        );
+    }
+
+    @Transactional
     RegisterResponseDTO register(RegisterRequestDTO registerRequestDTO) {
         School newSchool = new School(registerRequestDTO.name());
         schoolService.createSchool(newSchool);
@@ -45,6 +67,7 @@ public class AuthService {
                 token,
                 newUser.getEmail(),
                 newUser.getSchool().getName(),
+                newUser.getRole(),
                 newUser.getCreatedAt()
         );
     }
@@ -60,6 +83,8 @@ public class AuthService {
         return new LoginResponseDTO(
                 token,
                 user.getSchool().getName(),
+                user.getEmail(),
+                user.getRole(),
                 user.getCreatedAt(),
                 user.getUpdatedAt()
         );

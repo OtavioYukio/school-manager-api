@@ -1,8 +1,10 @@
 package com.otavioyukio.school_manager_api.auth;
 
 import jakarta.validation.Valid;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,5 +29,13 @@ public class AuthController {
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO requestDTO) {
         LoginResponseDTO responseDTO = authService.login(requestDTO);
         return ResponseEntity.ok(responseDTO);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/register-teacher")
+    public ResponseEntity<RegisterResponseDTO> registerTeacher(
+            @RequestBody @Valid RegisterTeacherRequestDTO requestDTO) {
+        RegisterResponseDTO responseDTO = authService.registerTeacher(requestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 }

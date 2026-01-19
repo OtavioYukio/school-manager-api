@@ -3,7 +3,9 @@ package com.otavioyukio.school_manager_api.auth;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.otavioyukio.school_manager_api.user.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ public class TokenService {
                     .withSubject(user.getEmail())
                     .withClaim("userId", user.getId())
                     .withClaim("schoolId", user.getSchool().getId())
+                    .withClaim("role", user.getRole().name())
                     .withExpiresAt(this.generateExpirationDate())
                     .sign(algorithm);
         } catch (JWTCreationException ex) {
@@ -33,17 +36,16 @@ public class TokenService {
         }
     }
 
-    public String validateToken(String token) {
+    public DecodedJWT decodeToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
 
             return JWT.require(algorithm)
                     .withIssuer("school-manager-api")
                     .build()
-                    .verify(token)
-                    .getSubject();
-        } catch (JWTVerificationException ex) {
-            return null;
+                    .verify(token);
+        } catch (JWTDecodeException exception) {
+            throw new RuntimeException("Error while decoding");
         }
     }
 

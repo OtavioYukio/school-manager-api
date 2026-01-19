@@ -8,7 +8,10 @@ import com.otavioyukio.school_manager_api.user.Role;
 import com.otavioyukio.school_manager_api.user.User;
 import com.otavioyukio.school_manager_api.user.UserService;
 import jakarta.transaction.Transactional;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,20 +31,22 @@ public class AuthService {
     }
 
     @Transactional
-    RegisterResponseDTO registerTeacher(RegisterTeacherRequestDTO registerTeacherRequestDTO) {
-        School school = schoolService.getSchoolById(registerTeacherRequestDTO.schoolId());
+    RegisterTeacherResponseDTO registerTeacher(RegisterTeacherRequestDTO registerRequestDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+
+        User user = userService.findUserByEmail(email);
+        School school = user.getSchool();
+
         User newUser = new User(
-                registerTeacherRequestDTO.email(),
-                passwordEncoder.encode(registerTeacherRequestDTO.password()),
-                school,
+                registerRequestDTO.email(),
+                passwordEncoder.encode(registerRequestDTO.password()),
+                user.getSchool(),
                 Role.TEACHER
         );
         userService.createUser(newUser);
 
-        String token = tokenService.generateToken(newUser);
-
-        return new RegisterResponseDTO(
-                token,
+        return new RegisterTeacherResponseDTO(
                 newUser.getEmail(),
                 newUser.getSchool().getName(),
                 newUser.getRole(),
